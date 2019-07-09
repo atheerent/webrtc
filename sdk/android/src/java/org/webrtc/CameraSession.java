@@ -33,4 +33,7 @@ interface CameraSession {
    * If waitCameraStop is true, also waits for the camera to stop.
    */
   void stop();
+
+  boolean hasTorch();
+  boolean setTorch(boolean enable);
 }

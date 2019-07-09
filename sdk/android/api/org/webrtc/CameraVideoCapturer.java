@@ -155,5 +155,8 @@ public interface CameraVideoCapturer extends VideoCapturer {
     public void release() {
       surfaceTextureHelper.getHandler().removeCallbacks(cameraObserver);
     }
+
+    boolean hasTorch();
+    boolean setTorch(boolean enable);
   }
 }
