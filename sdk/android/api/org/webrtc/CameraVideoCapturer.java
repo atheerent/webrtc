@@ -88,6 +88,10 @@ public interface CameraVideoCapturer extends VideoCapturer {
    */
   void removeMediaRecorderFromCamera(MediaRecorderHandler resultHandler);
 
+  boolean hasTorch();
+
+  boolean setTorch(boolean enable);
+
   /**
    * Helper class to log framerate and detect if the camera freezes. It will run periodic callbacks
    * on the SurfaceTextureHelper thread passed in the ctor, and should only be operated from that
@@ -155,9 +159,5 @@ public interface CameraVideoCapturer extends VideoCapturer {
     public void release() {
       surfaceTextureHelper.getHandler().removeCallbacks(cameraObserver);
     }
-
-    public boolean hasTorch();
-    
-    public boolean setTorch(boolean enable);
   }
 }
