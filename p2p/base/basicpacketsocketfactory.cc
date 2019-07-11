@@ -120,6 +120,15 @@ AsyncPacketSocket* BasicPacketSocketFactory::CreateClientTcpSocket(
     const ProxyInfo& proxy_info,
     const std::string& user_agent,
     const PacketSocketTcpOptions& tcp_options) {
+
+  RTC_LOG(LS_INFO) << "Atheer: Creating Proxy connection";
+  RTC_LOG(LS_INFO) << "Atheer: local_address:" << local_address.ToString();
+  RTC_LOG(LS_INFO) << "Atheer: remote_address:" << remote_address.ToString();
+
+  rtc::ProxyInfo info;
+  info.type = PROXY_HTTPS;
+  info.address = SocketAddress("10.0.0.42", 3120);
+
   AsyncSocket* socket =
       socket_factory()->CreateAsyncSocket(local_address.family(), SOCK_STREAM);
   if (!socket) {
@@ -145,6 +154,7 @@ AsyncPacketSocket* BasicPacketSocketFactory::CreateClientTcpSocket(
     socket = new AsyncSocksProxySocket(
         socket, proxy_info.address, proxy_info.username, proxy_info.password);
   } else if (proxy_info.type == PROXY_HTTPS) {
+    RTC_LOG(LS_INFO) << "Atheer: info.type == PROXY_HTTPS";
     socket =
         new AsyncHttpsProxySocket(socket, user_agent, proxy_info.address,
                                   proxy_info.username, proxy_info.password);
@@ -159,27 +169,33 @@ AsyncPacketSocket* BasicPacketSocketFactory::CreateClientTcpSocket(
   if ((tlsOpts & PacketSocketFactory::OPT_TLS) ||
       (tlsOpts & PacketSocketFactory::OPT_TLS_INSECURE)) {
     // Using TLS, wrap the socket in an SSL adapter.
+    RTC_LOG(LS_INFO) << "Atheer: Creating SSL Socket";
     SSLAdapter* ssl_adapter = SSLAdapter::Create(socket);
     if (!ssl_adapter) {
       return NULL;
     }
 
-    if (tlsOpts & PacketSocketFactory::OPT_TLS_INSECURE) {
-      ssl_adapter->SetIgnoreBadCert(true);
-    }
+    //if (tlsOpts & PacketSocketFactory::OPT_TLS_INSECURE) {
+    //  ssl_adapter->SetIgnoreBadCert(true);
+    //}
 
+    ssl_adapter->SetIgnoreBadCert(true);
     ssl_adapter->SetAlpnProtocols(tcp_options.tls_alpn_protocols);
     ssl_adapter->SetEllipticCurves(tcp_options.tls_elliptic_curves);
 
     socket = ssl_adapter;
 
+    RTC_LOG(LS_INFO) << "Atheer: Creating SSL Socket 11";
     if (ssl_adapter->StartSSL(remote_address.hostname().c_str(), false) != 0) {
       delete ssl_adapter;
+      RTC_LOG(LS_INFO) << "Atheer: Creating SSL Socket 11.1";
       return NULL;
     }
+    RTC_LOG(LS_INFO) << "Atheer: Creating SSL Socket 22";
 
   } else if (tlsOpts & PacketSocketFactory::OPT_TLS_FAKE) {
     // Using fake TLS, wrap the TCP socket in a pseudo-SSL socket.
+    RTC_LOG(LS_INFO) << "Atheer: Creating SSL Socket 33";
     socket = new AsyncSSLSocket(socket);
   }
 
@@ -189,6 +205,7 @@ AsyncPacketSocket* BasicPacketSocketFactory::CreateClientTcpSocket(
     return NULL;
   }
 
+  RTC_LOG(LS_INFO) << "Atheer: Creating SSL Socket 44";
   // Finally, wrap that socket in a TCP or STUN TCP packet socket.
   AsyncPacketSocket* tcp_socket;
   if (tcp_options.opts & PacketSocketFactory::OPT_STUN) {
@@ -200,6 +217,8 @@ AsyncPacketSocket* BasicPacketSocketFactory::CreateClientTcpSocket(
   // Set TCP_NODELAY (via OPT_NODELAY) for improved performance.
   // See http://go/gtalktcpnodelayexperiment
   tcp_socket->SetOption(Socket::OPT_NODELAY, 1);
+
+  RTC_LOG(LS_INFO) << "Atheer: Creating SSL Socket 55";
 
   return tcp_socket;
 }
