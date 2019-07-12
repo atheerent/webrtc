@@ -66,6 +66,8 @@ class Camera2Session implements CameraSession {
   @Nullable private CameraDevice cameraDevice;
   @Nullable private Surface surface;
 
+  private CaptureRequest.Builder captureRequestBuilder;
+
   // Initialized when capture session is created
   @Nullable private CameraCaptureSession captureSession;
 
@@ -163,7 +165,7 @@ class Camera2Session implements CameraSession {
          *   quality.
          */
         captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
-        
+
         // Set auto exposure fps range.
         captureRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE,
             new Range<Integer>(captureFormat.framerate.min / fpsUnitFactor,
