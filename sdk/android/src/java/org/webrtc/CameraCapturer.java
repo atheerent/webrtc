@@ -434,4 +434,24 @@ abstract class CameraCapturer implements CameraVideoCapturer {
       CameraSession.CreateSessionCallback createSessionCallback, CameraSession.Events events,
       Context applicationContext, SurfaceTextureHelper surfaceTextureHelper, String cameraName,
       int width, int height, int framerate);
+
+  @Override
+  public boolean hasTorch() {
+    if (currentSession != null) {
+      return currentSession.hasTorch();
+    } else {
+      Logging.d(TAG, "hasTorch: No session open");
+      return false;
+    }
+  }
+
+  @Override
+  public boolean setTorch(boolean enable) {
+    if (currentSession != null) {
+      return currentSession.setTorch(enable);
+    } else {
+      Logging.d(TAG, "setTorch: No session open");
+      return false;
+    }
+  }  
 }

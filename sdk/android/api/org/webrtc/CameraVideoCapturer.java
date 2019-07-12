@@ -96,6 +96,10 @@ public interface CameraVideoCapturer extends VideoCapturer {
     throw new UnsupportedOperationException("Deprecated and not implemented.");
   }
 
+  boolean hasTorch();
+
+  boolean setTorch(boolean enable);
+
   /**
    * Helper class to log framerate and detect if the camera freezes. It will run periodic callbacks
    * on the SurfaceTextureHelper thread passed in the ctor, and should only be operated from that
