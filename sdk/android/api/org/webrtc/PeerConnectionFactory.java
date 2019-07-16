@@ -44,12 +44,12 @@ public class PeerConnectionFactory {
     final String nativeLibraryName;
     @Nullable Loggable loggable;
     @Nullable Severity loggableSeverity;
-    final ProxyServerInfo proxyServerInfo;
+    @Nullable final ProxyServerInfo proxyServerInfo;
 
     private InitializationOptions(Context applicationContext, String fieldTrials,
         boolean enableInternalTracer, boolean enableVideoHwAcceleration,
         NativeLibraryLoader nativeLibraryLoader, String nativeLibraryName,
-        @Nullable Loggable loggable, @Nullable Severity loggableSeverity, ProxyServerInfo proxyServerInfo) {
+        @Nullable Loggable loggable, @Nullable Severity loggableSeverity, @Nullable ProxyServerInfo proxyServerInfo) {
       this.applicationContext = applicationContext;
       this.fieldTrials = fieldTrials;
       this.enableInternalTracer = enableInternalTracer;
@@ -74,7 +74,7 @@ public class PeerConnectionFactory {
       private String nativeLibraryName = "jingle_peerconnection_so";
       @Nullable private Loggable loggable = null;
       @Nullable private Severity loggableSeverity = null;
-      private ProxyServerInfo proxyServerInfo =  null;
+      @Nullable private ProxyServerInfo proxyServerInfo =  null;
 
       Builder(Context applicationContext) {
         this.applicationContext = applicationContext;
