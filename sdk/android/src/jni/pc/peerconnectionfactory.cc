@@ -156,7 +156,7 @@ static void JNI_PeerConnectionFactory_InitializeProxyServerInfo(
 
   std::string proxy_type_init_string;
   std::string proxy_host_init_string;
-  std::string proxy_port_init_string;
+  std::int proxy_port_init_int;
   std::string proxy_username_init_string;
   std::string proxy_password_init_string;
 
@@ -165,7 +165,7 @@ static void JNI_PeerConnectionFactory_InitializeProxyServerInfo(
   }
 
   if (!proxy_host_string.is_null()) {
-    proxy_host_init_string = JavaToNativeString(jni, proxy_type_string);
+    proxy_port_init_int = stoi(JavaToNativeString(jni, proxy_type_string));
   }
 
   if (!proxy_port_string.is_null()) {
@@ -182,10 +182,10 @@ static void JNI_PeerConnectionFactory_InitializeProxyServerInfo(
 
   RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:type" << proxy_type_init_string;
   RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:host" << proxy_host_init_string;
-  RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:port" << proxy_port_init_string;
+  RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:port" << proxy_port_init_int;
   RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:username" << proxy_username_init_string;
   RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:password" << proxy_password_init_string;
-  proxy_info::InitProxyServerInfo(proxy_type_init_string, proxy_host_init_string, proxy_port_init_string, proxy_username_init_string, proxy_password_init_string);
+  proxy_info::InitProxyServerInfo(proxy_type_init_string, proxy_host_init_string, proxy_port_init_int, proxy_username_init_string, proxy_password_init_string);
 
 }
 

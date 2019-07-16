@@ -16,16 +16,16 @@ namespace proxy_info {
 
 static std::string proxy_type_string;
 static std::string proxy_host_string;
-static std::string proxy_port_string;
+static std::int proxy_port_int;
 static std::string proxy_username_string;
 static std::string proxy_password_string;
 
 
 // Optionally initialize field trial from a string.
-void InitProxyServerInfo(std::string type_string, std::string host_string, std::string port_string, std::string username_string, std::string password_string) {
+void InitProxyServerInfo(std::string type_string, std::string host_string, std::int port_int, std::string username_string, std::string password_string) {
   proxy_type_string = type_string;
   proxy_host_string = host_string;
-  proxy_port_string = port_string;
+  proxy_port_int = port_int;
   proxy_username_string = username_string;
   proxy_password_string = password_string;
 }
@@ -38,8 +38,8 @@ std::string GetProxyServerHostString(){
   return proxy_host_string;
 }
 
-std::string GetProxyServerPortString(){
-  return proxy_port_string;
+std::int GetProxyServerPortString(){
+  return proxy_port_int;
 }
 
 std::string GetProxyServerUsernameString(){
