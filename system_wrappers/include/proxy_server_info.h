@@ -20,7 +20,7 @@ namespace proxy_info {
 // This method can be called at most once before any other call into webrtc.
 // E.g. before the peer connection factory is constructed.
 // Note: trials_string must never be destroyed.
-void InitProxyServerInfo(std::string type_string, std::string host_string, std::int port_int, std::string username_string, std::string password_string);
+void InitProxyServerInfo(std::string type_string, std::string host_string, int port_int, std::string username_string, std::string password_string);
 
 std::string GetProxyServerTypeString();
 
