@@ -185,7 +185,7 @@ static void JNI_PeerConnectionFactory_InitializeProxyServerInfo(
   RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:port" << proxy_port_init_string;
   RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:username" << proxy_username_init_string;
   RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:password" << proxy_password_init_string;
-  proxy_info::InitProxyServerInfo(proxy_type_init_string, proxy_host_init_string, proxy_port_init_string, proxy_username_init_string, proxy_password_init_string);
+  //proxy_info::InitProxyServerInfo(proxy_type_init_string, proxy_host_init_string, proxy_port_init_string, proxy_username_init_string, proxy_password_init_string);
 
 }
 
