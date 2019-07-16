@@ -143,6 +143,17 @@ static void JNI_PeerConnectionFactory_InitializeFieldTrials(
   field_trial::InitFieldTrialsFromString(field_trials_init_string->c_str());
 }
 
+static void JNI_PeerConnectionFactory_InitializeProxyInfo(
+    JNIEnv* jni,
+    const JavaParamRef<jclass>&,
+    const JavaParamRef<jstring>& proxy_type,
+    const JavaParamRef<jstring>& proxy_host,
+    const JavaParamRef<jstring>& proxy_port,
+    const JavaParamRef<jstring>& proxy_username,
+    const JavaParamRef<jstring>& proxy_password) {
+  RTC_LOG(LS_INFO) << "initializeProxyServerInfo: ";
+}
+
 static void JNI_PeerConnectionFactory_InitializeInternalTracer(
     JNIEnv* jni,
     const JavaParamRef<jclass>&) {

@@ -44,11 +44,12 @@ public class PeerConnectionFactory {
     final String nativeLibraryName;
     @Nullable Loggable loggable;
     @Nullable Severity loggableSeverity;
+    final ProxyServerInfo proxyServerInfo;
 
     private InitializationOptions(Context applicationContext, String fieldTrials,
         boolean enableInternalTracer, boolean enableVideoHwAcceleration,
         NativeLibraryLoader nativeLibraryLoader, String nativeLibraryName,
-        @Nullable Loggable loggable, @Nullable Severity loggableSeverity) {
+        @Nullable Loggable loggable, @Nullable Severity loggableSeverity, ProxyServerInfo proxyServerInfo) {
       this.applicationContext = applicationContext;
       this.fieldTrials = fieldTrials;
       this.enableInternalTracer = enableInternalTracer;
@@ -57,6 +58,7 @@ public class PeerConnectionFactory {
       this.nativeLibraryName = nativeLibraryName;
       this.loggable = loggable;
       this.loggableSeverity = loggableSeverity;
+      this.proxyServerInfo =  proxyServerInfo;
     }
 
     public static Builder builder(Context applicationContext) {
@@ -72,6 +74,7 @@ public class PeerConnectionFactory {
       private String nativeLibraryName = "jingle_peerconnection_so";
       @Nullable private Loggable loggable = null;
       @Nullable private Severity loggableSeverity = null;
+      private ProxyServerInfo proxyServerInfo =  null;
 
       Builder(Context applicationContext) {
         this.applicationContext = applicationContext;
@@ -110,10 +113,15 @@ public class PeerConnectionFactory {
         return this;
       }
 
+      public Builder setProxyServerInfo(ProxyServerInfo proxyServerInfo) {
+        this.proxyServerInfo = proxyServerInfo;
+        return this;
+      }
+
       public PeerConnectionFactory.InitializationOptions createInitializationOptions() {
         return new PeerConnectionFactory.InitializationOptions(applicationContext, fieldTrials,
             enableInternalTracer, enableVideoHwAcceleration, nativeLibraryLoader, nativeLibraryName,
-            loggable, loggableSeverity);
+            loggable, loggableSeverity, proxyServerInfo);
       }
     }
   }
@@ -251,6 +259,9 @@ public class PeerConnectionFactory {
       Logging.deleteInjectedLoggable();
       nativeDeleteLoggable();
     }
+    if(options.proxyServerInfo != null) {
+      nativeInitializeProxyServerInfo(options.proxyServerInfo.getType(), options.proxyServerInfo.getHost(), options.proxyServerInfo.getPort(), options.proxyServerInfo.getUsername(), options.proxyServerInfo.getPassword());
+    }
   }
 
   private void checkInitializeHasBeenCalled() {
@@ -277,6 +288,12 @@ public class PeerConnectionFactory {
   @Deprecated
   public static void initializeFieldTrials(String fieldTrialsInitString) {
     nativeInitializeFieldTrials(fieldTrialsInitString);
+  }
+
+  public static void initializeProxyServerInfo(ProxyServerInfo proxyServerInfo) {
+    if(proxyServerInfo != null) {
+      nativeInitializeProxyServerInfo(proxyServerInfo.getType(), proxyServerInfo.getHost(), proxyServerInfo.getPort(), proxyServerInfo.getUsername(), proxyServerInfo.getPassword());
+    }
   }
 
   // Wrapper of webrtc::field_trial::FindFullName. Develop the feature with default behaviour off.
@@ -496,6 +513,7 @@ public class PeerConnectionFactory {
   // (for example, at application startup time).
   private static native void nativeInitializeAndroidGlobals();
   private static native void nativeInitializeFieldTrials(String fieldTrialsInitString);
+  private static native void nativeInitializeProxyServerInfo(String type, String host, String port, String username, String port);
   private static native String nativeFindFieldTrialsFullName(String name);
   private static native void nativeInitializeInternalTracer();
   // Internal tracing shutdown, called to prevent resource leaks. Must be called after
