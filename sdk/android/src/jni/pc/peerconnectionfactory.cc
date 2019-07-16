@@ -165,19 +165,19 @@ static void JNI_PeerConnectionFactory_InitializeProxyServerInfo(
   }
 
   if (!proxy_host_string.is_null()) {
-    proxy_port_init_int = stoi(JavaToNativeString(jni, proxy_type_string));
+    proxy_host_init_string = JavaToNativeString(jni, proxy_host_string);
   }
 
   if (!proxy_port_string.is_null()) {
-    proxy_port_init_string = JavaToNativeString(jni, proxy_type_string);
+    proxy_port_init_int = stoi(JavaToNativeString(jni, proxy_port_string));
   }
 
   if (!proxy_username_string.is_null()) {
-    proxy_username_init_string = JavaToNativeString(jni, proxy_type_string);
+    proxy_username_init_string = JavaToNativeString(jni, proxy_username_string);
   }
 
   if (!proxy_password_string.is_null()) {
-    proxy_password_init_string = JavaToNativeString(jni, proxy_type_string);
+    proxy_password_init_string = JavaToNativeString(jni, proxy_password_string);
   }
 
   RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:type" << proxy_type_init_string;
