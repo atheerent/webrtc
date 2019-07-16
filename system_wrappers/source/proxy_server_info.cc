@@ -9,8 +9,6 @@
 
 #include "system_wrappers/include/proxy_server_info.h"
 
-#include <string>
-
 // Simple field trial implementation, which allows client to
 // specify desired flags in InitFieldTrialsFromString.
 namespace webrtc {
@@ -19,7 +17,7 @@ namespace proxy_info {
 static std::string proxy_type_string;
 static std::string proxy_host_string;
 static std::string proxy_port_string;
-static std::string1 proxy_username_string
+static std::string proxy_username_string;
 static std::string proxy_password_string;
 
 
