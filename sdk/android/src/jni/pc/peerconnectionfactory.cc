@@ -143,7 +143,7 @@ static void JNI_PeerConnectionFactory_InitializeFieldTrials(
   field_trial::InitFieldTrialsFromString(field_trials_init_string->c_str());
 }
 
-static void JNI_PeerConnectionFactory_InitializeProxyInfo(
+static void JNI_PeerConnectionFactory_InitializeProxyServerInfo(
     JNIEnv* jni,
     const JavaParamRef<jclass>&,
     const JavaParamRef<jstring>& proxy_type,
