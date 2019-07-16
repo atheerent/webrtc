@@ -7,7 +7,7 @@
 // be found in the AUTHORS file in the root of the source tree.
 //
 
-#include "system_wrappers/include/proxyy_server_info.h"
+#include "system_wrappers/include/proxy_server_info.h"
 
 #include <string>
 
