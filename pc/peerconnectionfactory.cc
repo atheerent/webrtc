@@ -366,6 +366,8 @@ PeerConnectionFactory::CreatePeerConnection(
     PeerConnectionDependencies dependencies) {
   RTC_DCHECK(signaling_thread_->IsCurrent());
 
+  RTC_LOG(LS_INFO) << "Atheer:Creating Peer Connection";
+
   // Set internal defaults if optional dependencies are not set.
   if (!dependencies.cert_generator) {
     dependencies.cert_generator =
@@ -377,10 +379,11 @@ PeerConnectionFactory::CreatePeerConnection(
         default_network_manager_.get(), default_socket_factory_.get(),
         configuration.turn_customizer);
 
+    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info";
     std::string user_agent;
     rtc::ProxyInfo proxy_info;
-    proxy_info.type = PROXY_HTTPS;
-    proxy_info.address = SocketAddress("10.0.0.42", 3120);
+    proxy_info.type = rtc::PROXY_HTTPS;
+    proxy_info.address = rtc::SocketAddress("10.0.0.42", 3120);
 
     allocator->set_proxy(user_agent, proxy_info);
 
