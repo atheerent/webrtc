@@ -16,15 +16,15 @@
 namespace webrtc {
 namespace proxy_info {
 
-static const char* proxy_type_string = NULL;
-static const char* proxy_host_string = NULL;
-static const char* proxy_port_string = NULL;
-static const char* proxy_username_string = NULL;
-static const char* proxy_password_string = NULL;
+static std::string proxy_type_string;
+static std::string proxy_host_string;
+static std::string proxy_port_string;
+static std::string proxy_username_string;
+static std::string proxy_password_string;
 
 
 // Optionally initialize field trial from a string.
-void InitProxyServerInfo(const char* type_string, const char* host_string, const char* port_string, const char* username_string, const char* password_string) {
+void InitProxyServerInfo(std::string type_string, std::string host_string, std::string port_string, std::string username_string, std::string password_string) {
   proxy_type_string = type_string;
   proxy_host_string = host_string;
   proxy_port_string = port_string;
@@ -32,23 +32,23 @@ void InitProxyServerInfo(const char* type_string, const char* host_string, const
   proxy_password_string = password_string;
 }
 
-const char* GetProxyServerTypeString(){
+std::string GetProxyServerTypeString(){
   return proxy_type_string;
 }
 
-const char* GetProxyServerHostString(){
+std::string GetProxyServerHostString(){
   return proxy_host_string;
 }
 
-const char* GetProxyServerPortString(){
+std::string GetProxyServerPortString(){
   return proxy_port_string;
 }
 
-const char* GetProxyServerUsernameString(){
+std::string GetProxyServerUsernameString(){
   return proxy_username_string;
 }
 
-const char* GetProxyServerPasswordString(){
+std::string GetProxyServerPasswordString(){
   return proxy_password_string;
 }
 

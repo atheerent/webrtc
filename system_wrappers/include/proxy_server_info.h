@@ -18,17 +18,17 @@ namespace proxy_info {
 // This method can be called at most once before any other call into webrtc.
 // E.g. before the peer connection factory is constructed.
 // Note: trials_string must never be destroyed.
-void InitProxyServerInfo(const char* type_string, const char* host_string, const char* port_string, const char* username_string, const char* password_string);
+void InitProxyServerInfo(std::string type_string, std::string host_string, std::string port_string, std::string username_string, std::string password_string);
 
-const char* GetProxyServerTypeString();
+std::string GetProxyServerTypeString();
 
-const char* GetProxyServerHostString();
+std::string GetProxyServerHostString();
 
-const char* GetProxyServerPortString();
+std::string GetProxyServerPortString();
 
-const char* GetProxyServerUsernameString();
+std::string GetProxyServerUsernameString();
 
-const char* GetProxyServerPasswordString();
+std::string GetProxyServerPasswordString();
 
 }  // namespace proxy_info
 }  // namespace webrtc
