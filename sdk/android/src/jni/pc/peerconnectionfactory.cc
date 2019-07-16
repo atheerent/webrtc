@@ -156,7 +156,7 @@ static void JNI_PeerConnectionFactory_InitializeProxyServerInfo(
 
   std::string proxy_type_init_string;
   std::string proxy_host_init_string;
-  std::int proxy_port_init_int;
+  int proxy_port_init_int;
   std::string proxy_username_init_string;
   std::string proxy_password_init_string;
 

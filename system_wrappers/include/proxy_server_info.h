@@ -26,7 +26,7 @@ std::string GetProxyServerTypeString();
 
 std::string GetProxyServerHostString();
 
-std::int GetProxyServerPortString();
+int GetProxyServerPortInt();
 
 std::string GetProxyServerUsernameString();
 

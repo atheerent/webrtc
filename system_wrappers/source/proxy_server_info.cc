@@ -38,7 +38,7 @@ std::string GetProxyServerHostString(){
   return proxy_host_string;
 }
 
-std::int GetProxyServerPortString(){
+int GetProxyServerPortInt(){
   return proxy_port_int;
 }
 

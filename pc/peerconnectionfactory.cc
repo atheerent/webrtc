@@ -385,7 +385,7 @@ PeerConnectionFactory::CreatePeerConnection(
 
     std::string proxy_type = webrtc::proxy_info::GetProxyServerTypeString();
     std::string proxy_host = webrtc::proxy_info::GetProxyServerTypeString();
-    std::string proxy_port = webrtc::proxy_info::GetProxyServerTypeString();
+    int proxy_port = webrtc::proxy_info::GetProxyServerPortInt();
     std::string proxy_username = webrtc::proxy_info::GetProxyServerTypeString();
     std::string proxy_password = webrtc::proxy_info::GetProxyServerTypeString();
 
