@@ -167,11 +167,10 @@ AsyncPacketSocket* BasicPacketSocketFactory::CreateClientTcpSocket(
       return NULL;
     }
 
-    //if (tlsOpts & PacketSocketFactory::OPT_TLS_INSECURE) {
-    //  ssl_adapter->SetIgnoreBadCert(true);
-    //}
-    RTC_LOG(LS_INFO) << "Atheer: Ignoring Bad Cert";
-    ssl_adapter->SetIgnoreBadCert(true);
+    if (tlsOpts & PacketSocketFactory::OPT_TLS_INSECURE) {
+      RTC_LOG(LS_INFO) << "Atheer: Ignoring Bad Cert";
+      ssl_adapter->SetIgnoreBadCert(true);
+    }
 
     ssl_adapter->SetAlpnProtocols(tcp_options.tls_alpn_protocols);
     ssl_adapter->SetEllipticCurves(tcp_options.tls_elliptic_curves);
