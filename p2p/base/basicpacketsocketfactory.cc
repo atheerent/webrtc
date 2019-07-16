@@ -118,8 +118,8 @@ AsyncPacketSocket* BasicPacketSocketFactory::CreateClientTcpSocket(
   RTC_LOG(LS_INFO) << "Atheer: local_address:" << local_address.ToString();
   RTC_LOG(LS_INFO) << "Atheer: remote_address:" << remote_address.ToString();
   RTC_LOG(LS_INFO) << "Atheer: proxy_info.type:" << proxy_info.type;
-  RTC_LOG(LS_INFO) << "Atheer: proxy_info.type:" << proxy_info.host;
-  RTC_LOG(LS_INFO) << "Atheer: proxy_info.type:" << proxy_info.port;
+  RTC_LOG(LS_INFO) << "Atheer: proxy_info.username:" << proxy_info.username;
+  RTC_LOG(LS_INFO) << "Atheer: proxy_info.address:" << proxy_info.address.ToString();
 
   AsyncSocket* socket =
       socket_factory()->CreateAsyncSocket(local_address.family(), SOCK_STREAM);
