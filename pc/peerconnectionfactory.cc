@@ -373,9 +373,11 @@ PeerConnectionFactory::CreatePeerConnection(
                                                         network_thread_);
   }
   if (!dependencies.allocator) {
-    dependencies.allocator.reset(new cricket::BasicPortAllocator(
+    cricket::BasicPortAllocator* allocator = new cricket::BasicPortAllocator(
         default_network_manager_.get(), default_socket_factory_.get(),
-        configuration.turn_customizer));
+        configuration.turn_customizer);
+
+    dependencies.allocator.reset(allocator);
   }
 
   network_thread_->Invoke<void>(
