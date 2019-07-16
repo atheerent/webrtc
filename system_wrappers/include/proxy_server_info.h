@@ -11,6 +11,8 @@
 #ifndef SYSTEM_WRAPPERS_INCLUDE_PROXY_SERVER_INFO_H_
 #define SYSTEM_WRAPPERS_INCLUDE_PROXY_SERVER_INFO_H_
 
+#include <string>
+
 namespace webrtc {
 namespace proxy_info {
 
