@@ -377,6 +377,13 @@ PeerConnectionFactory::CreatePeerConnection(
         default_network_manager_.get(), default_socket_factory_.get(),
         configuration.turn_customizer);
 
+    std::string user_agent;
+    rtc::ProxyInfo proxy_info;
+    proxy_info.type = PROXY_HTTPS;
+    proxy_info.address = SocketAddress("10.0.0.42", 3120);
+
+    allocator->set_proxy(user_agent, proxy_info);
+
     dependencies.allocator.reset(allocator);
   }
 
