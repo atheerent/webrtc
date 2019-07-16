@@ -46,6 +46,7 @@
 #include "pc/videocapturertracksource.h"
 #include "pc/videotrack.h"
 #include "rtc_base/experiments/congestion_controller_experiment.h"
+#include "system_wrappers/include/proxy_server_info.h"
 
 namespace webrtc {
 
@@ -381,6 +382,19 @@ PeerConnectionFactory::CreatePeerConnection(
 
     RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info";
     std::string user_agent;
+
+    std::string proxy_type = webrtc::proxy_info::GetProxyServerTypeString();
+    std::string proxy_host = webrtc::proxy_info::GetProxyServerTypeString();
+    std::string proxy_port = webrtc::proxy_info::GetProxyServerTypeString();
+    std::string proxy_username = webrtc::proxy_info::GetProxyServerTypeString();
+    std::string proxy_password = webrtc::proxy_info::GetProxyServerTypeString();
+
+    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:type" << proxy_type;
+    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:host" << proxy_host;
+    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:port" << proxy_port;
+    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:username" << proxy_username;
+    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:password" << proxy_password;
+
     rtc::ProxyInfo proxy_info;
     proxy_info.type = rtc::PROXY_HTTPS;
     proxy_info.address = rtc::SocketAddress("10.0.0.42", 3120);
