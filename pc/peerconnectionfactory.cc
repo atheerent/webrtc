@@ -384,10 +384,10 @@ PeerConnectionFactory::CreatePeerConnection(
     std::string user_agent;
 
     std::string proxy_type = webrtc::proxy_info::GetProxyServerTypeString();
-    std::string proxy_host = webrtc::proxy_info::GetProxyServerTypeString();
+    std::string proxy_host = webrtc::proxy_info::GetProxyServerHostString();
     int proxy_port = webrtc::proxy_info::GetProxyServerPortInt();
-    std::string proxy_username = webrtc::proxy_info::GetProxyServerTypeString();
-    std::string proxy_password = webrtc::proxy_info::GetProxyServerTypeString();
+    std::string proxy_username = webrtc::proxy_info::GetProxyServerUsernameString();
+    std::string proxy_password = webrtc::proxy_info::GetProxyServerPasswordString();
 
     RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:type" << proxy_type;
     RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:host" << proxy_host;

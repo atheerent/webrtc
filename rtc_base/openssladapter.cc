@@ -407,9 +407,12 @@ ssl_error:
 
 int OpenSSLAdapter::ContinueSSL() {
   RTC_DCHECK(state_ == SSL_CONNECTING);
-
+  RTC_LOG(LS_INFO) << "OpenSSLAdapter::ContinueSSL: ";
   // Clear the DTLS timer
   Thread::Current()->Clear(this, MSG_TIMEOUT);
+
+  RTC_LOG(LS_INFO) << "Atheer::ContinueSSL:SSL_connect" << SSL_connect(ssl_);
+  RTC_LOG(LS_INFO) << "Atheer::ContinueSSL:SSL_accept" << SSL_accept(ssl_);
 
   int code = (role_ == SSL_CLIENT) ? SSL_connect(ssl_) : SSL_accept(ssl_);
   switch (SSL_get_error(ssl_, code)) {
