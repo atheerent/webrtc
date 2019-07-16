@@ -513,7 +513,7 @@ public class PeerConnectionFactory {
   // (for example, at application startup time).
   private static native void nativeInitializeAndroidGlobals();
   private static native void nativeInitializeFieldTrials(String fieldTrialsInitString);
-  private static native void nativeInitializeProxyServerInfo(String type, String host, String port, String username, String port);
+  private static native void nativeInitializeProxyServerInfo(String type, String host, String port, String username, String password);
   private static native String nativeFindFieldTrialsFullName(String name);
   private static native void nativeInitializeInternalTracer();
   // Internal tracing shutdown, called to prevent resource leaks. Must be called after
