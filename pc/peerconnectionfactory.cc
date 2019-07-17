@@ -381,25 +381,36 @@ PeerConnectionFactory::CreatePeerConnection(
         configuration.turn_customizer);
 
     RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info";
-    std::string user_agent;
 
-    std::string proxy_type = webrtc::proxy_info::GetProxyServerTypeString();
-    std::string proxy_host = webrtc::proxy_info::GetProxyServerHostString();
-    int proxy_port = webrtc::proxy_info::GetProxyServerPortInt();
-    std::string proxy_username = webrtc::proxy_info::GetProxyServerUsernameString();
-    std::string proxy_password = webrtc::proxy_info::GetProxyServerPasswordString();
+    if(webrtc::proxy_info::GetProxyServerTypeString().compare("HTTPS") == 0) {
+      RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:type" << webrtc::proxy_info::GetProxyServerTypeString();
+      std::string user_agent;
 
-    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:type" << proxy_type;
-    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:host" << proxy_host;
-    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:port" << proxy_port;
-    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:username" << proxy_username;
-    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:password" << proxy_password;
+      std::string proxy_host = webrtc::proxy_info::GetProxyServerHostString();
+      int proxy_port = webrtc::proxy_info::GetProxyServerPortInt();
+      std::string proxy_username = webrtc::proxy_info::GetProxyServerUsernameString();
+      std::string proxy_password = webrtc::proxy_info::GetProxyServerPasswordString();
 
-    rtc::ProxyInfo proxy_info;
-    proxy_info.type = rtc::PROXY_HTTPS;
-    proxy_info.address = rtc::SocketAddress("10.0.0.42", 3120);
+      RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:host" << proxy_host;
+      RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:port" << proxy_port;
+      RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:username" << proxy_username;
+      RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:password" << proxy_password;
 
-    allocator->set_proxy(user_agent, proxy_info);
+      rtc::ProxyInfo proxy_info;
+
+      proxy_info.type = rtc::PROXY_HTTPS;
+      proxy_info.address = rtc::SocketAddress(proxy_host, proxy_port);
+
+      if(proxy_username.length() > 0) {
+         proxy_info.username = proxy_username;
+      }
+
+      //if(proxy_password.length() > 0) {
+      //   proxy_info.username = proxy_password;
+      //}
+
+      allocator->set_proxy(user_agent, proxy_info);
+    }
 
     dependencies.allocator.reset(allocator);
   }
