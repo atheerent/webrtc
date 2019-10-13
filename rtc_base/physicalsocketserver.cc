@@ -559,8 +559,9 @@ int PhysicalSocket::TranslateOption(Option opt, int* slevel, int* sopt) {
       *sopt = TCP_NODELAY;
       break;
     case OPT_DSCP:
-      RTC_LOG(LS_WARNING) << "Socket::OPT_DSCP not supported.";
-      return -1;
+      *slevel = IPPROTO_IP;
+      *sopt = IP_TOS;
+      break;
     case OPT_RTP_SENDTIME_EXTN_ID:
       return -1;  // No logging is necessary as this not a OS socket option.
     default:

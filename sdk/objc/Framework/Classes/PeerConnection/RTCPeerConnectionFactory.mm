@@ -36,6 +36,9 @@
 #include "sdk/objc/Framework/Native/api/video_encoder_factory.h"
 #include "sdk/objc/Framework/Native/src/objc_video_decoder_factory.h"
 #include "sdk/objc/Framework/Native/src/objc_video_encoder_factory.h"
+
+#include "system_wrappers/include/proxy_server_info.h"
+
 #endif
 
 #if defined(WEBRTC_IOS)
@@ -251,6 +254,47 @@
 - (void)stopAecDump {
   _nativeFactory->StopAecDump();
   _hasStartedAecDump = NO;
+}
+
+- (void)initProxyServerInfo:(NSString*)type
+                            AndWithHost:(NSString*)host
+                            AndWithPort:(NSString*)port
+                            AndWithUsername:(NSString*)username
+                            AndWithPassword:(NSString*)password {
+  RTCLogInfo(@"Atheer:initProxyServerInfo");
+  RTCLogInfo(@"Atheer:initializeProxyServerInfo:type:%@", type);
+  RTCLogInfo(@"Atheer:initializeProxyServerInfo:host:%@", host);
+  RTCLogInfo(@"Atheer:initializeProxyServerInfo:port:%@", port);
+  RTCLogInfo(@"Atheer:initializeProxyServerInfo:username:%@", username);
+  RTCLogInfo(@"Atheer:initializeProxyServerInfo:password:%@", password);
+
+  std::string proxy_type_string;
+  std::string proxy_host_string;
+  int proxy_port_int = 0;
+  std::string proxy_username_string;
+  std::string proxy_password_string;
+
+  if (type != nil) {
+    proxy_type_string = [NSString stdStringForString:type];
+  }
+
+  if (host != nil) {
+    proxy_host_string = [NSString stdStringForString:host];
+  }
+
+  if (port != nil) {
+    proxy_port_int = [port intValue];
+  }
+
+  if (username != nil) {
+    proxy_username_string = [NSString stdStringForString:username];
+  }
+
+  if (password != nil) {
+    proxy_password_string = [NSString stdStringForString:password];
+  }
+
+  webrtc::proxy_info::InitProxyServerInfo(proxy_type_string, proxy_host_string, proxy_port_int, proxy_username_string, proxy_password_string);
 }
 
 @end

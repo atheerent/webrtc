@@ -279,6 +279,10 @@ public class PeerConnectionFactory {
     nativeInitializeFieldTrials(fieldTrialsInitString);
   }
 
+  public static void initializeProxyServerInfo(String type, String host, String port, String username, String password) {
+    nativeInitializeProxyServerInfo(type, host, port, username, password);
+  }
+
   // Wrapper of webrtc::field_trial::FindFullName. Develop the feature with default behaviour off.
   // Example usage:
   // if (PeerConnectionFactory.fieldTrialsFindFullName("WebRTCExperiment").equals("Enabled")) {
@@ -496,6 +500,7 @@ public class PeerConnectionFactory {
   // (for example, at application startup time).
   private static native void nativeInitializeAndroidGlobals();
   private static native void nativeInitializeFieldTrials(String fieldTrialsInitString);
+  private static native void nativeInitializeProxyServerInfo(String type, String host, String port, String username, String password);
   private static native String nativeFindFieldTrialsFullName(String name);
   private static native void nativeInitializeInternalTracer();
   // Internal tracing shutdown, called to prevent resource leaks. Must be called after

@@ -18,7 +18,7 @@ namespace cricket {
 struct MediaConfig {
   // Set DSCP value on packets. This flag comes from the
   // PeerConnection constraint 'googDscp'.
-  bool enable_dscp = false;
+  bool enable_dscp = true;
 
   // Video-specific config.
   struct Video {

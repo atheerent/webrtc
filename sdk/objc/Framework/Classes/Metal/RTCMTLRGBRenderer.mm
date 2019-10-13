@@ -33,10 +33,10 @@ static NSString *const shaderSource = MTL_STRINGIFY(
       float2 texcoord;
     } VertexIO;
 
-    vertex VertexIO vertexPassthrough(device Vertex * verticies[[buffer(0)]],
+    vertex VertexIO vertexPassthrough(constant Vertex * verticies[[buffer(0)]],
                                       uint vid[[vertex_id]]) {
       VertexIO out;
-      device Vertex &v = verticies[vid];
+      constant Vertex &v = verticies[vid];
       out.position = float4(float2(v.position), 0.0, 1.0);
       out.texcoord = v.texcoord;
       return out;

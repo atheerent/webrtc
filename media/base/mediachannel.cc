@@ -18,11 +18,11 @@ VideoOptions::~VideoOptions() = default;
 void MediaChannel::SetInterface(NetworkInterface* iface) {
   rtc::CritScope cs(&network_interface_crit_);
   network_interface_ = iface;
-  SetDscp(enable_dscp_ ? PreferredDscp() : rtc::DSCP_DEFAULT);
+  SetDscp(enable_dscp_ ? PreferredDscp() : PreferredDscp());
 }
 
 rtc::DiffServCodePoint MediaChannel::PreferredDscp() const {
-  return rtc::DSCP_DEFAULT;
+  return rtc::DSCP_AF41;
 }
 
 int MediaChannel::GetRtpSendTimeExtnId() const {

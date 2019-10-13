@@ -240,10 +240,12 @@ class MediaChannel : public sigslot::has_slots<> {
  private:
   // This method sets DSCP |value| on both RTP and RTCP channels.
   int SetDscp(rtc::DiffServCodePoint value) {
+    // shift DSCP value to fit six most significant bits of IP DiffServ field
+    int ds_value = value << 2;
     int ret;
-    ret = SetOption(NetworkInterface::ST_RTP, rtc::Socket::OPT_DSCP, value);
+    ret = SetOption(NetworkInterface::ST_RTP, rtc::Socket::OPT_DSCP, ds_value);
     if (ret == 0) {
-      ret = SetOption(NetworkInterface::ST_RTCP, rtc::Socket::OPT_DSCP, value);
+      ret = SetOption(NetworkInterface::ST_RTCP, rtc::Socket::OPT_DSCP, ds_value);
     }
     return ret;
   }

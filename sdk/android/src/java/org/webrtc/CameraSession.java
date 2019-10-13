@@ -39,6 +39,9 @@ interface CameraSession {
    */
   void stop();
 
+  boolean hasTorch();
+  boolean setTorch(boolean enable);
+
   static int getDeviceOrientation(Context context) {
     final WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
     switch (wm.getDefaultDisplay().getRotation()) {

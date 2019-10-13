@@ -40,6 +40,7 @@
 // We don't want to depend on 'system_wrappers:field_trial_default' because
 // clients should be able to provide their own implementation.
 #include "system_wrappers/include/field_trial_default.h"  // nogncheck
+#include "system_wrappers/include/proxy_server_info.h"  // nogncheck
 
 namespace webrtc {
 namespace jni {
@@ -141,6 +142,51 @@ static void JNI_PeerConnectionFactory_InitializeFieldTrials(
       JavaToNativeString(jni, j_trials_init_string));
   RTC_LOG(LS_INFO) << "initializeFieldTrials: " << *field_trials_init_string;
   field_trial::InitFieldTrialsFromString(field_trials_init_string->c_str());
+}
+
+static void JNI_PeerConnectionFactory_InitializeProxyServerInfo(
+    JNIEnv* jni,
+    const JavaParamRef<jclass>&,
+    const JavaParamRef<jstring>& proxy_type_string,
+    const JavaParamRef<jstring>& proxy_host_string,
+    const JavaParamRef<jstring>& proxy_port_string,
+    const JavaParamRef<jstring>& proxy_username_string,
+    const JavaParamRef<jstring>& proxy_password_string) {
+  RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo: ";
+
+  std::string proxy_type_init_string;
+  std::string proxy_host_init_string;
+  int proxy_port_init_int;
+  std::string proxy_username_init_string;
+  std::string proxy_password_init_string;
+
+  if (!proxy_type_string.is_null()) {
+    proxy_type_init_string = JavaToNativeString(jni, proxy_type_string);
+  }
+
+  if (!proxy_host_string.is_null()) {
+    proxy_host_init_string = JavaToNativeString(jni, proxy_host_string);
+  }
+
+  if (!proxy_port_string.is_null()) {
+    proxy_port_init_int = stoi(JavaToNativeString(jni, proxy_port_string));
+  }
+
+  if (!proxy_username_string.is_null()) {
+    proxy_username_init_string = JavaToNativeString(jni, proxy_username_string);
+  }
+
+  if (!proxy_password_string.is_null()) {
+    proxy_password_init_string = JavaToNativeString(jni, proxy_password_string);
+  }
+
+  RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:type" << proxy_type_init_string;
+  RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:host" << proxy_host_init_string;
+  RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:port" << proxy_port_init_int;
+  RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:username" << proxy_username_init_string;
+  RTC_LOG(LS_INFO) << "Atheer:initializeProxyServerInfo:password" << proxy_password_init_string;
+  proxy_info::InitProxyServerInfo(proxy_type_init_string, proxy_host_init_string, proxy_port_init_int, proxy_username_init_string, proxy_password_init_string);
+
 }
 
 static void JNI_PeerConnectionFactory_InitializeInternalTracer(
