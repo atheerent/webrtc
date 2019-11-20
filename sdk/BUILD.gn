@@ -434,6 +434,10 @@ if (is_ios || is_mac) {
         sources += [
           "objc/Framework/Classes/PeerConnection/RTCFileVideoCapturer.m",
           "objc/Framework/Headers/WebRTC/RTCFileVideoCapturer.h",
+          "objc/Framework/Classes/PeerConnection/RTCAtheerBuffer.m",
+          "objc/Framework/Headers/WebRTC/RTCAtheerBuffer.h",
+          "objc/Framework/Classes/PeerConnection/RTCAtheerVideoCapturer.m",
+          "objc/Framework/Headers/WebRTC/RTCAtheerVideoCapturer.h",
         ]
       }
       libs = [ "AVFoundation.framework" ]
@@ -1000,6 +1004,8 @@ if (is_ios || is_mac) {
         output_name = "WebRTC"
 
         common_objc_headers = [
+          "objc/Framework/Headers/WebRTC/RTCAtheerBuffer.h",
+          "objc/Framework/Headers/WebRTC/RTCAtheerVideoCapturer.h",
           "objc/Framework/Headers/WebRTC/RTCAudioSession.h",
           "objc/Framework/Headers/WebRTC/RTCVideoCodec.h",
           "objc/Framework/Headers/WebRTC/RTCVideoCodecFactory.h",
