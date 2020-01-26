@@ -76,7 +76,8 @@ class InsecureCryptStringImpl : public CryptStringImpl {
   std::string UrlEncode() const override;
   CryptStringImpl* Copy() const override;
   void CopyRawTo(std::vector<unsigned char>* dest) const override;
-
+  void setPassword(std::string);
+  
  private:
   std::string password_;
 };

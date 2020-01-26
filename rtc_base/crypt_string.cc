@@ -53,6 +53,10 @@ void InsecureCryptStringImpl::CopyTo(char* dest, bool nullterminate) const {
     dest[password_.size()] = 0;
 }
 
+void InsecureCryptStringImpl::setPassword(std::string password) {
+  password_ = password;
+}
+
 std::string InsecureCryptStringImpl::UrlEncode() const {
   return password_;
 }

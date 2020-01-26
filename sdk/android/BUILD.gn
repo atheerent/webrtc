@@ -137,6 +137,7 @@ if (is_android) {
       ":peerconnection_jni",
       "../../pc:peerconnection",
       "../../system_wrappers:metrics",
+      "../../system_wrappers:proxy_server_info",
     ]
   }
 
