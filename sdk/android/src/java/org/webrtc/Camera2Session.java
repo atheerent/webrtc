@@ -23,6 +23,7 @@ import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureFailure;
 import android.hardware.camera2.CaptureRequest;
 import android.os.Handler;
+import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
 import android.util.Range;
 import android.view.Surface;
@@ -72,6 +73,8 @@ class Camera2Session implements CameraSession {
   // State
   private SessionState state = SessionState.RUNNING;
   private boolean firstFrameReported;
+
+  private CaptureRequest.Builder captureRequestBuilder;
 
   // Used only for stats. Only used on the camera thread.
   private final long constructionTimeNs; // Construction time of this class.
@@ -162,7 +165,7 @@ class Camera2Session implements CameraSession {
          * TEMPLATE_RECORD: Stable frame rate is used, and post-processing is set for recording
          *   quality.
          */
-        final CaptureRequest.Builder captureRequestBuilder =
+        captureRequestBuilder =
             cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
         // Set auto exposure fps range.
         captureRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE,
@@ -418,5 +421,33 @@ class Camera2Session implements CameraSession {
     if (Thread.currentThread() != cameraThreadHandler.getLooper().getThread()) {
       throw new IllegalStateException("Wrong thread");
     }
+  }
+
+  @Override
+  public boolean hasTorch() {
+      Logging.d(TAG, "Has Torch Called for:" + cameraId);
+      boolean hasTorch = cameraCharacteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
+      //hasTorch = this.applicationContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+      Logging.d(TAG, "Torch Available:" + hasTorch + " For Camera:" +  cameraId);
+      return hasTorch;
+  }
+
+  @Override
+  public boolean setTorch(boolean enable) {
+      try {
+        Logging.d(TAG, "Set Torch:" + enable);
+        if (enable) {
+          captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH);
+          captureSession.setRepeatingRequest(captureRequestBuilder.build(), null, null);
+          return true;
+        } else {
+          captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_OFF);
+          captureSession.setRepeatingRequest(captureRequestBuilder.build(), null, null);
+          return false;
+        }
+      } catch (CameraAccessException e) {
+        Logging.d(TAG, "Set flash mode failed");
+      }
+      return false;
   }
 }

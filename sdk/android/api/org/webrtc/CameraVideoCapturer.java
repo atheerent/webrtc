@@ -97,6 +97,16 @@ public interface CameraVideoCapturer extends VideoCapturer {
   }
 
   /**
+   * Check if camera has flash
+   */
+  boolean hasTorch();
+
+  /**
+   * Set Flashlight
+   */
+  boolean setTorch(boolean enable);
+
+  /**
    * Helper class to log framerate and detect if the camera freezes. It will run periodic callbacks
    * on the SurfaceTextureHelper thread passed in the ctor, and should only be operated from that
    * thread.

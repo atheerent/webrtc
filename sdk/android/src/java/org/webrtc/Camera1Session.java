@@ -334,4 +334,16 @@ class Camera1Session implements CameraSession {
       throw new IllegalStateException("Wrong thread");
     }
   }
+
+  @Override
+  public boolean hasTorch() {
+      Logging.d(TAG, "Has Torch Called" + false);
+      return false; // no support for torch when using camera1
+  }
+
+  @Override
+  public boolean setTorch(boolean enable) {
+      Logging.d(TAG, "Set Torch Called" + enable);
+      throw new java.lang.RuntimeException("Torch not supported when using camera1");
+  }
 }
