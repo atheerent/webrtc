@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 import org.webrtc.CameraEnumerationAndroid.CaptureFormat;
 
 @SuppressWarnings("deprecation")
-class Camera1Session implements CameraSession {
+public class Camera1Session implements CameraSession {
   private static final String TAG = "Camera1Session";
   private static final int NUMBER_OF_CAPTURE_BUFFERS = 3;
 
@@ -333,5 +333,28 @@ class Camera1Session implements CameraSession {
     if (Thread.currentThread() != cameraThreadHandler.getLooper().getThread()) {
       throw new IllegalStateException("Wrong thread");
     }
+  }
+
+  @Override
+  public boolean hasTorch() {
+      Logging.d(TAG, "Has Torch Called" + false);
+      return false; // no support for torch when using camera1
+  }
+
+  @Override
+  public boolean setTorch(boolean enable) {
+      Logging.d(TAG, "Set Torch Called" + enable);
+      throw new java.lang.RuntimeException("Torch not supported when using camera1");
+  }
+
+  @Override
+  public void processSingleRequest(CameraCapturer.SingleCaptureCallBack callback, Handler captureHandler) {
+    camera.takePicture(null, null, new android.hardware.Camera.PictureCallback() {
+      @Override
+      public void onPictureTaken(final byte[] data, android.hardware.Camera camera) {
+        camera.startPreview();
+        captureHandler.post(() -> callback.captureSuccess(data, getFrameOrientation()));
+      }
+    });
   }
 }

@@ -76,6 +76,12 @@ RTC_OBJC_EXPORT
 /* Stop an active AecDump recording */
 - (void)stopAecDump;
 
+- (void)initProxyServerInfo:(NSString*)type
+                            AndWithHost:(NSString*)host
+                            AndWithPort:(NSString*)port
+                            AndWithUsername:(NSString*)username
+                            AndWithPassword:(NSString*)password;
+
 @end
 
 NS_ASSUME_NONNULL_END
