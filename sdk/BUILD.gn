@@ -527,10 +527,6 @@ if (is_ios || is_mac) {
         sources += [
           "objc/components/capturer/RTCFileVideoCapturer.h",
           "objc/components/capturer/RTCFileVideoCapturer.m",
-          "objc/components/capturer/RTCAtheerBuffer.h",
-          "objc/components/capturer/RTCAtheerBuffer.m",
-          "objc/components/capturer/RTCAtheerVideoCapturer.h",
-          "objc/components/capturer/RTCAtheerVideoCapturer.m",
         ]
       }
       libs = [
@@ -956,10 +952,8 @@ if (is_ios || is_mac) {
         "objc/Framework/Headers/WebRTC/RTCAudioSource.h",
         "objc/Framework/Headers/WebRTC/RTCAudioTrack.h",
         "objc/Framework/Headers/WebRTC/RTCCVPixelBuffer.h",
-        "objc/Framework/Headers/WebRTC/RTCAtheerBuffer.h",
         "objc/Framework/Headers/WebRTC/RTCCallbackLogger.h",
         "objc/Framework/Headers/WebRTC/RTCCameraPreviewView.h",
-        "objc/Framework/Headers/WebRTC/RTCAtheerVideoCapturer.h",
         "objc/Framework/Headers/WebRTC/RTCCameraVideoCapturer.h",
         "objc/Framework/Headers/WebRTC/RTCCertificate.h",
         "objc/Framework/Headers/WebRTC/RTCConfiguration.h",
@@ -1241,8 +1235,6 @@ if (is_ios || is_mac) {
           "objc/base/RTCYUVPlanarBuffer.h",
           "objc/components/audio/RTCAudioSession.h",
           "objc/components/audio/RTCAudioSessionConfiguration.h",
-          "objc/components/capturer/RTCAtheerVideoCapturer.h",
-          "objc/components/capturer/RTCAtheerBuffer.h",
           "objc/components/capturer/RTCCameraVideoCapturer.h",
           "objc/components/capturer/RTCFileVideoCapturer.h",
           "objc/components/renderer/metal/RTCMTLVideoView.h",
@@ -1439,7 +1431,6 @@ if (is_ios || is_mac) {
           "objc/base/RTCVideoFrameBuffer.h",
           "objc/base/RTCVideoRenderer.h",
           "objc/base/RTCYUVPlanarBuffer.h",
-          "objc/components/capturer/RTCAtheerVideoCapturer.h",
           "objc/components/capturer/RTCCameraVideoCapturer.h",
           "objc/components/capturer/RTCFileVideoCapturer.h",
           "objc/components/renderer/metal/RTCMTLNSVideoView.h",
