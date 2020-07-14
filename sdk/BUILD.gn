@@ -355,8 +355,6 @@ if (is_ios || is_mac) {
         "objc/api/video_frame_buffer/RTCNativeMutableI420Buffer.mm",
         "objc/components/video_frame_buffer/RTCCVPixelBuffer.h",
         "objc/components/video_frame_buffer/RTCCVPixelBuffer.mm",
-        "objc/components/video_frame_buffer/RTCAtheerBuffer.h",
-        "objc/components/video_frame_buffer/RTCAtheerBuffer.m",
       ]
       deps = [
         ":base_objc",
@@ -529,6 +527,8 @@ if (is_ios || is_mac) {
         sources += [
           "objc/components/capturer/RTCFileVideoCapturer.h",
           "objc/components/capturer/RTCFileVideoCapturer.m",
+          "objc/components/capturer/RTCAtheerBuffer.h",
+          "objc/components/capturer/RTCAtheerBuffer.m",
           "objc/components/capturer/RTCAtheerVideoCapturer.h",
           "objc/components/capturer/RTCAtheerVideoCapturer.m",
         ]
@@ -1242,6 +1242,7 @@ if (is_ios || is_mac) {
           "objc/components/audio/RTCAudioSession.h",
           "objc/components/audio/RTCAudioSessionConfiguration.h",
           "objc/components/capturer/RTCAtheerVideoCapturer.h",
+          "objc/components/capturer/RTCAtheerBuffer.h",
           "objc/components/capturer/RTCCameraVideoCapturer.h",
           "objc/components/capturer/RTCFileVideoCapturer.h",
           "objc/components/renderer/metal/RTCMTLVideoView.h",
@@ -1256,7 +1257,6 @@ if (is_ios || is_mac) {
           "objc/components/video_codec/RTCVideoEncoderFactoryH264.h",
           "objc/components/video_codec/RTCVideoEncoderH264.h",
           "objc/components/video_frame_buffer/RTCCVPixelBuffer.h",
-          "objc/components/video_frame_buffer/RTCAtheerBuffer.h",
           "objc/helpers/RTCCameraPreviewView.h",
           "objc/helpers/RTCDispatcher.h",
           "objc/helpers/UIDevice+RTCDevice.h",
@@ -1454,7 +1454,6 @@ if (is_ios || is_mac) {
           "objc/components/video_codec/RTCVideoEncoderFactoryH264.h",
           "objc/components/video_codec/RTCVideoEncoderH264.h",
           "objc/components/video_frame_buffer/RTCCVPixelBuffer.h",
-          "objc/components/video_frame_buffer/RTCAtheerBuffer.h",
           "objc/helpers/RTCDispatcher.h",
         ]
         if (!build_with_chromium) {

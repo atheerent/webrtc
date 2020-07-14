@@ -7,4 +7,4 @@
  *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
-#import "components/video_frame_buffer/RTCAtheerBuffer.h"
+#import "components/capturer/RTCAtheerBuffer.h"
