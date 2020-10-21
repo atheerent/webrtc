@@ -14,6 +14,7 @@ import android.content.Context;
 import android.graphics.Matrix;
 import android.view.WindowManager;
 import android.view.Surface;
+import android.os.Handler;
 
 interface CameraSession {
   enum FailureType { ERROR, DISCONNECTED }
@@ -48,6 +49,8 @@ interface CameraSession {
    * Set Flashlight
    */
   boolean setTorch(boolean enable);
+
+  void processSingleRequest(int orientation, CameraCapturer.SingleCaptureCallBack callback, Handler captureHandler);
 
   static int getDeviceOrientation(Context context) {
     final WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

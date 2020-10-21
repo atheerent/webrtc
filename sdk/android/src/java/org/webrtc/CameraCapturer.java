@@ -17,7 +17,7 @@ import android.support.annotation.Nullable;
 import java.util.Arrays;
 
 @SuppressWarnings("deprecation")
-abstract class CameraCapturer implements CameraVideoCapturer {
+public abstract class CameraCapturer implements CameraVideoCapturer {
   enum SwitchState {
     IDLE, // No switch requested.
     PENDING, // Waiting for previous capture session to open.
@@ -455,5 +455,16 @@ abstract class CameraCapturer implements CameraVideoCapturer {
       Logging.d(TAG, "setTorch: No session open");
       return false;
     }
-  }    
+  }
+
+  public interface SingleCaptureCallBack {
+    void captureSuccess(byte[] jpeg);
+    void captureFailed(String error);
+  }
+
+  public void takeSnapshot(int orientation, CameraCapturer.SingleCaptureCallBack callback, Handler captureHandler) {
+    synchronized (stateLock) {
+      currentSession.processSingleRequest(orientation, callback, captureHandler);
+    }
+  }
 }

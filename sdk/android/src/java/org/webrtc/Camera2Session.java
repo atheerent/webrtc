@@ -13,27 +13,24 @@ package org.webrtc;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Matrix;
+import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CameraMetadata;
-import android.hardware.camera2.CaptureFailure;
-import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.*;
+import android.media.Image;
+import android.media.ImageReader;
 import android.os.Handler;
 import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
 import android.util.Range;
 import android.view.Surface;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.webrtc.CameraEnumerationAndroid.CaptureFormat;
 
 @TargetApi(21)
-class Camera2Session implements CameraSession {
+public class Camera2Session implements CameraSession {
   private static final String TAG = "Camera2Session";
 
   private static final Histogram camera2StartTimeMsHistogram =
@@ -66,6 +63,7 @@ class Camera2Session implements CameraSession {
   // Initialized when camera opens
   @Nullable private CameraDevice cameraDevice;
   @Nullable private Surface surface;
+  @Nullable private ImageReader imageReader;
 
   // Initialized when capture session is created
   @Nullable private CameraCaptureSession captureSession;
@@ -128,7 +126,7 @@ class Camera2Session implements CameraSession {
       surface = new Surface(surfaceTextureHelper.getSurfaceTexture());
       try {
         camera.createCaptureSession(
-            Arrays.asList(surface), new CaptureSessionCallback(), cameraThreadHandler);
+            Arrays.asList(surface, imageReader.getSurface()), new CaptureSessionCallback(), cameraThreadHandler);
       } catch (CameraAccessException e) {
         reportError("Failed to create capture session. " + e);
         return;
@@ -272,6 +270,29 @@ class Camera2Session implements CameraSession {
     }
   }
 
+  private void initImageReader() {
+    List<Size> sizes = Camera2Enumerator.getSupportedSizes(cameraCharacteristics);
+    Size maxSize = sizes.get(0);
+    //Size maxSize16_9 = null;
+    for (Size s : sizes) {
+      if (s.height * s.width > maxSize.height * maxSize.width ) {
+        maxSize = s;
+      }
+		  /*if (s.height * 16 == s.width * 9 && (maxSize16_9 == null || s.height * s.width > maxSize16_9.height * maxSize16_9.width)) {
+			  maxSize16_9 = s;
+		  }*/
+    }
+    if (this.imageReader != null) {
+		    // dispose it
+		  this.imageReader.close();
+		  this.imageReader = null;
+    }
+	  /*if (maxSize16_9 != null)
+		  this.imageReader = ImageReader.newInstance(maxSize16_9.width, maxSize16_9.height, ImageFormat.JPEG, 1);
+	  else*/
+    this.imageReader = ImageReader.newInstance(maxSize.width, maxSize.height, ImageFormat.JPEG, 1);
+  }
+
   public static void create(CreateSessionCallback callback, Events events,
       Context applicationContext, CameraManager cameraManager,
       SurfaceTextureHelper surfaceTextureHelper, String cameraId, int width, int height,
@@ -297,6 +318,7 @@ class Camera2Session implements CameraSession {
     this.width = width;
     this.height = height;
     this.framerate = framerate;
+    this.imageReader = null;
 
     start();
   }
@@ -317,6 +339,7 @@ class Camera2Session implements CameraSession {
 
     findCaptureFormat();
     openCamera();
+    initImageReader();
   }
 
   private void findCaptureFormat() {
@@ -449,5 +472,62 @@ class Camera2Session implements CameraSession {
         Logging.d(TAG, "Set flash mode failed");
       }
       return false;
+  }
+
+
+  @Override
+  public void processSingleRequest(int orientation, CameraCapturer.SingleCaptureCallBack captureCallback, Handler captureHandler) {
+      try {
+          final CaptureRequest.Builder captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+
+		      captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
+		      captureRequestBuilder.set(CaptureRequest.CONTROL_AE_LOCK, false);
+          captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, orientation);
+		      captureRequestBuilder.addTarget(imageReader.getSurface());
+
+          imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+              @Override
+              public void onImageAvailable(ImageReader reader) {
+                  Logging.d(TAG, "SNAPSHOT: Image available");
+    				      Image image = null;
+
+                  try {
+                      image = reader.acquireLatestImage();
+                      if (image == null) {
+                          captureCallback.captureFailed("No available image from ImageReader");
+                          return ;
+                      }
+
+                      ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                      byte[] imageBytes = new byte[buffer.remaining()];
+                      buffer.get(imageBytes);
+                      image.close();
+                      captureCallback.captureSuccess(imageBytes);
+                  } catch (Exception e) {
+                      Logging.d(TAG, "SNAPSHOT: Image acquire/conversion failed, due to " + e.toString());
+                      if (image != null) {
+                        image.close();
+                      }
+                  }
+              }
+           }, captureHandler);
+
+           captureSession.capture(captureRequestBuilder.build(), new CameraCaptureSession.CaptureCallback() {
+                @Override
+                public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
+                    Logging.d(TAG, "SNAPSHOT: capture completed");
+                    //imageReader.setOnImageAvailableListener(null, null);
+                }
+
+                @Override
+                public void onCaptureFailed(CameraCaptureSession session, CaptureRequest request, CaptureFailure failure) {
+                    Logging.d(TAG, "SNAPSHOT: capture failed due to " + failure.toString());
+                    captureHandler.post(() -> captureCallback.captureFailed(failure.toString()) );
+                }
+            }, null); // capture as in "current" thread
+      } catch (CameraAccessException e) {
+          Logging.e(TAG, "SNAPSHOT: failed due to " + e.getReason() + ":" + e.getMessage());
+          // reportError("Failed to start capture request. " + e);
+      }
   }
 }
