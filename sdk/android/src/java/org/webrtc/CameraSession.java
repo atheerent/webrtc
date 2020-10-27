@@ -50,7 +50,7 @@ interface CameraSession {
    */
   boolean setTorch(boolean enable);
 
-  void processSingleRequest(int orientation, CameraCapturer.SingleCaptureCallBack callback, Handler captureHandler);
+  void processSingleRequest(CameraCapturer.SingleCaptureCallBack callback, Handler captureHandler);
 
   static int getDeviceOrientation(Context context) {
     final WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

@@ -476,13 +476,13 @@ public class Camera2Session implements CameraSession {
 
 
   @Override
-  public void processSingleRequest(int orientation, CameraCapturer.SingleCaptureCallBack captureCallback, Handler captureHandler) {
+  public void processSingleRequest(CameraCapturer.SingleCaptureCallBack captureCallback, Handler captureHandler) {
       try {
           final CaptureRequest.Builder captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
 
 		      captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
 		      captureRequestBuilder.set(CaptureRequest.CONTROL_AE_LOCK, false);
-          captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, orientation);
+          captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, getFrameOrientation());
 		      captureRequestBuilder.addTarget(imageReader.getSurface());
 
           imageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
@@ -502,7 +502,7 @@ public class Camera2Session implements CameraSession {
                       byte[] imageBytes = new byte[buffer.remaining()];
                       buffer.get(imageBytes);
                       image.close();
-                      captureCallback.captureSuccess(imageBytes);
+                      captureCallback.captureSuccess(imageBytes, getFrameOrientation());
                   } catch (Exception e) {
                       Logging.d(TAG, "SNAPSHOT: Image acquire/conversion failed, due to " + e.toString());
                       if (image != null) {

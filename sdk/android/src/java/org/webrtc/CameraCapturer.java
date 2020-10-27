@@ -458,11 +458,11 @@ public abstract class CameraCapturer implements CameraVideoCapturer {
   }
 
   public interface SingleCaptureCallBack {
-    void captureSuccess(byte[] jpeg);
+    void captureSuccess(byte[] jpeg, int orientation);
     void captureFailed(String error);
   }
 
-  public void takeSnapshot(int orientation, CameraCapturer.SingleCaptureCallBack callback, Handler captureHandler) {
+  public void takeSnapshot(CameraCapturer.SingleCaptureCallBack callback, Handler captureHandler) {
     synchronized (stateLock) {
       currentSession.processSingleRequest(orientation, callback, captureHandler);
     }

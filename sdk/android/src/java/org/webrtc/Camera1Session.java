@@ -348,12 +348,12 @@ public class Camera1Session implements CameraSession {
   }
 
   @Override
-  public void processSingleRequest(int orientation, CameraCapturer.SingleCaptureCallBack callback, Handler captureHandler) {
+  public void processSingleRequest(CameraCapturer.SingleCaptureCallBack callback, Handler captureHandler) {
     camera.takePicture(null, null, new android.hardware.Camera.PictureCallback() {
       @Override
       public void onPictureTaken(final byte[] data, android.hardware.Camera camera) {
         camera.startPreview();
-        captureHandler.post(() -> callback.captureSuccess(data));
+        captureHandler.post(() -> callback.captureSuccess(data, getFrameOrientation()));
       }
     });
   }
