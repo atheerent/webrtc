@@ -464,7 +464,7 @@ public abstract class CameraCapturer implements CameraVideoCapturer {
 
   public void takeSnapshot(CameraCapturer.SingleCaptureCallBack callback, Handler captureHandler) {
     synchronized (stateLock) {
-      currentSession.processSingleRequest(orientation, callback, captureHandler);
+      currentSession.processSingleRequest(callback, captureHandler);
     }
   }
 }
