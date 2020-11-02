@@ -108,6 +108,14 @@ rtc_library("metrics") {
   ]
 }
 
+rtc_source_set("proxy_server_info") {
+  visibility = [ "*" ]
+  sources = [
+    "include/proxy_server_info.h",
+    "source/proxy_server_info.cc",
+  ]
+}
+
 if (rtc_include_tests) {
   rtc_test("system_wrappers_unittests") {
     testonly = true
