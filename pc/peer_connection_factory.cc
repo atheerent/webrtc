@@ -45,6 +45,7 @@
 #include "rtc_base/experiments/field_trial_units.h"
 #include "rtc_base/numerics/safe_conversions.h"
 #include "rtc_base/system/file_wrapper.h"
+#include "system_wrappers/include/proxy_server_info.h"
 
 namespace webrtc {
 
@@ -257,6 +258,9 @@ PeerConnectionFactory::CreatePeerConnection(
     const PeerConnectionInterface::RTCConfiguration& configuration,
     PeerConnectionDependencies dependencies) {
   RTC_DCHECK(signaling_thread_->IsCurrent());
+
+  RTC_LOG(LS_INFO) << "Atheer:Creating Peer Connection";
+
   RTC_DCHECK(!(dependencies.allocator && dependencies.packet_socket_factory))
       << "You can't set both allocator and packet_socket_factory; "
          "the former is going away (see bugs.webrtc.org/7447";
@@ -277,6 +281,46 @@ PeerConnectionFactory::CreatePeerConnection(
     dependencies.allocator = std::make_unique<cricket::BasicPortAllocator>(
         default_network_manager_.get(), packet_socket_factory,
         configuration.turn_customizer);
+
+    RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info";
+
+    if(webrtc::proxy_info::GetProxyServerTypeString().compare("HTTPS") == 0) {
+      RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:type" << webrtc::proxy_info::GetProxyServerTypeString();
+      std::string user_agent;
+
+      std::string proxy_host = webrtc::proxy_info::GetProxyServerHostString();
+      int proxy_port = webrtc::proxy_info::GetProxyServerPortInt();
+      std::string proxy_username = webrtc::proxy_info::GetProxyServerUsernameString();
+      std::string proxy_password = webrtc::proxy_info::GetProxyServerPasswordString();
+
+      RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:host" << proxy_host;
+      RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:port" << proxy_port;
+      RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:username" << proxy_username;
+      RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:password" << proxy_password;
+
+      rtc::ProxyInfo proxy_info;
+
+      proxy_info.type = rtc::PROXY_HTTPS;
+      proxy_info.address = rtc::SocketAddress(proxy_host, proxy_port);
+
+      if(proxy_username.length() > 0) {
+         proxy_info.username = proxy_username;
+      }
+
+      if(proxy_password.length() > 0) {
+        rtc::InsecureCryptStringImpl* insecure_crypt_password = new rtc::InsecureCryptStringImpl();
+        insecure_crypt_password->setPassword(proxy_password);
+
+        rtc::CryptString* crypt_proxy_password = new rtc::CryptString(*insecure_crypt_password);
+        proxy_info.password = *crypt_proxy_password;
+
+        RTC_LOG(LS_INFO) << "Atheer:Setting Proxy Info:crypt_password" << insecure_crypt_password->password();
+      }
+      //if(proxy_password.length() > 0) {
+      //   proxy_info.username = proxy_password;
+      //}
+      dependencies.allocator->set_proxy(user_agent, proxy_info);
+    }
   }
 
   if (!dependencies.async_resolver_factory) {
