@@ -511,10 +511,11 @@ public class Camera2Session implements CameraSession {
                       image.close();
                       captureCallback.captureSuccess(imageBytes, getFrameOrientation());
                   } catch (Exception e) {
-                      Logging.d(TAG, "SNAPSHOT: Image acquire/conversion failed, due to " + e.toString());
+                      Logging.d(TAG, "SNAPSHOT: Image acquire/conversion failed due to " + e.toString());
                       if (image != null) {
                         image.close();
                       }
+                      captureCallback.captureFailed("SNAPSHOT: Image acquire/conversion failed due to " + e.toString());
                   }
               }
            }, captureHandler);
@@ -523,7 +524,6 @@ public class Camera2Session implements CameraSession {
                 @Override
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     Logging.d(TAG, "SNAPSHOT: capture completed");
-                    //imageReader.setOnImageAvailableListener(null, null);
                 }
 
                 @Override
@@ -531,10 +531,10 @@ public class Camera2Session implements CameraSession {
                     Logging.d(TAG, "SNAPSHOT: capture failed due to " + failure.toString());
                     captureHandler.post(() -> captureCallback.captureFailed(failure.toString()) );
                 }
-            }, null); // capture as in "current" thread
-      } catch (CameraAccessException e) {
-          Logging.e(TAG, "SNAPSHOT: failed due to " + e.getReason() + ":" + e.getMessage());
-          // reportError("Failed to start capture request. " + e);
+            }, null);
+      } catch (Exception e) {
+          Logging.e(TAG, "SNAPSHOT: failed due to " + e.getMessage());
+          captureCallback.captureFailed("SNAPSHOT: failed due to " + e.getMessage());
       }
   }
 }

@@ -485,7 +485,12 @@ public abstract class CameraCapturer implements CameraVideoCapturer {
 
   public void takeSnapshot(CameraCapturer.SingleCaptureCallBack callback, Handler captureHandler) {
     synchronized (stateLock) {
-      currentSession.processSingleRequest(callback, captureHandler);
+      if (currentSession != null) {
+        currentSession.processSingleRequest(callback, captureHandler);
+      } else {
+        Logging.d(TAG, "takeSnapshot: No session open");
+        captureCallback.captureFailed("Camera Session not open. Capture failed");
+      }
     }
   }
 }
